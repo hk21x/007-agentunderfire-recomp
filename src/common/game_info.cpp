@@ -11,6 +11,7 @@
 #include "common/auf.h"
 #include "core/input.h"
 #include "core/log.h"
+#include "gpu/state.h"
 
 namespace auf {
 bool skip_intro = false;
@@ -47,6 +48,16 @@ float FrameWidth() {
 namespace {
 const bool kDrv = auf::kImage == auf::kDriving;
 
+// Hit flash in the driving levels (auf::hit_flash): DRIVING.XBE adds a full screen quad to the frame when Bond is hit, through a
+// vertex program with no texture and additive blending (ONE, ONE). Headless on mis02a's gun its frames were the paler ones
+// and nothing else drew that way. With the setting off such a draw is left out (on foot it is the HUD's fill, src/bond/hooks.cpp).
+void DrivingFlashFilter(const gpu::State& s, gpu::DrawAdjust& adjust) {
+    if (auf::hit_flash || !(s.vs_handle & 1) || s.textures[0]) return;
+    if (!s.simple[gpu::kMBlendEnable >> 2] || s.simple[gpu::kMSrcBlend >> 2] != 1 || s.simple[gpu::kMDestBlend >> 2] != 1) return;
+    LOG_FIRST(1, "auf: the hit flash left out (hit_flash off)");
+    adjust.skip = true;
+}
+
 // after the settings load: the harness's environment overrides them; each setting in effect is logged
 void Init() {
     // every achievement's condition parses (a typo would leave it never met)
@@ -57,6 +68,7 @@ void Init() {
     if (const char* e = std::getenv("AUF_HIT_FLASH"); e && *e) auf::hit_flash = *e == '1';
     if (const char* e = std::getenv("AUF_FOV"); e && *e) auf::fov_percent = uint32_t(std::atoi(e));
     if (auf::skip_intro) LOGR("auf: the logo movies are skipped (skip_intro)");
+    if (kDrv) gpu::g_draw_filter = DrivingFlashFilter;  // here, not a static initializer: those never ran in the Windows exe
 }
 
 // keyboard and mouse (Windows virtual key codes: this file builds for the headless harness too)
