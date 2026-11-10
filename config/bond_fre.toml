@@ -123,3 +123,7 @@ call = "WheelZoom"
 [[hook]]
 at = 0x5BDD1
 call = "ClampTextEnd"
+
+[[hook]]
+at = 0x539A9
+call = "NoHitFlash"

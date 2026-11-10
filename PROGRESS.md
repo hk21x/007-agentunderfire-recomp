@@ -23,6 +23,9 @@ Newest first. Each entry: date, what changed, what was learned, what's next.
 
 ## Log
 
+### 2026-11-10 - Issue #7 again: the hit flash is the HUD's own white fill
+- Harry: the white flash when shot stays with Hit Flash off. Headless in Mediterranean Crisis (Bond shot on the ship), the setflashcolor handler 0xAF9E0 never ran; a full screen untextured blended quad (FVF 0x44, the frame's last draw) came on the hit frames, which the reference pictures show paler. Its source, found by logging every large 2D box with its caller: 0x53840 (from 0x555D4) fills 640x480 white (1,1,1) at alpha [ebx+0x30], skipped at 0.
+- Now a hook at 0x539A9 sets that alpha to 0 when hit_flash is off (mapped to French, German, USA). The 0xAF9E0 override is gone.
 ### 2026-11-09 - The multi-core renderer (branch mt2, SDK render-mt2 07f92a7)
 - Harry wants AUF on the multi-core renderer before its next release. render-mt2 (the PGR2 session's) is fork main 89cafb8 plus it; AUF pins it on this branch until it reaches fork main.
 - The "map-load race" from Harry's AUF-mt2 runs: traced headless, the load (0x28480), the set (0x165C40), the use (0x165D40) and the unload before the next map (0x28700, 0x165E60) all run on one guest thread, in order. Both deaths were the first map load with the game read from X:\AUF-mt2\assets, a network drive (the third death was the share's in-page error): a map file read cut short leaves [0x374404] unset. Not a race; to the SDK session (host read errors on a share).
