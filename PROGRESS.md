@@ -23,6 +23,10 @@ Newest first. Each entry: date, what changed, what was learned, what's next.
 
 ## Log
 
+### 2026-11-10 - Issue #7, the driving levels: their hit flash
+- Harry's log: Hit Flash off, flash still there, in DRIVING.XBE (the gun of mission 2): the on-foot fix does not reach the driving program. There the flash is a full screen quad through a vertex program, untextured, additive (ONE, ONE). On mis02a's gun its frames were the bright ones (0.3 to 0.74 against about 0.2).
+- A draw filter in DRIVING.XBE leaves such draws out when hit_flash is off (gpu::g_draw_filter, set in Init). Headless mis02a: frames over 0.3 41 of 86 with it on, 1 of 80 off. On mis02b, mis07a and mis09 every draw of that kind is the full screen quad (4, 1, 9), so nothing else goes.
+
 ### 2026-11-10 - Issue #7 again: the hit flash is the HUD's own white fill
 - Harry: the white flash when shot stays with Hit Flash off. Headless in Mediterranean Crisis (Bond shot on the ship), the setflashcolor handler 0xAF9E0 never ran; a full screen untextured blended quad (FVF 0x44, the frame's last draw) came on the hit frames, which the reference pictures show paler. Its source, found by logging every large 2D box with its caller: 0x53840 (from 0x555D4) fills 640x480 white (1,1,1) at alpha [ebx+0x30], skipped at 0.
 - Now a hook at 0x539A9 sets that alpha to 0 when hit_flash is off (mapped to French, German, USA). The 0xAF9E0 override is gone.
