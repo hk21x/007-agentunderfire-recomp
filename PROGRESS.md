@@ -23,6 +23,10 @@ Newest first. Each entry: date, what changed, what was learned, what's next.
 
 ## Log
 
+### 2026-11-10 - Release 1.0.2
+- Published by Harry: the Hit Flash setting (#7), 16:10 and 3:2 screens (#4), R reloads mounted guns (#8), the launcher's in-place update, SDK 89cafb8. Tag v1.0.2 at 9fef360; packages built on the Windows VM from clean clones with LLVM 22.1.3 (PAL 83,571,087 bytes, USA 78,527,498), their .json checked against the zips.
+- Next: the multi-core renderer (branch mt2) once render-mt2 is on fork main; issue #6 waits on the player's logs.
+
 ### 2026-11-10 - Issue #7, the driving levels: their hit flash
 - Harry's log: Hit Flash off, flash still there, in DRIVING.XBE (the gun of mission 2): the on-foot fix does not reach the driving program. There the flash is a full screen quad through a vertex program, untextured, additive (ONE, ONE). On mis02a's gun its frames were the bright ones (0.3 to 0.74 against about 0.2).
 - A draw filter in DRIVING.XBE leaves such draws out when hit_flash is off (gpu::g_draw_filter, set in Init). Headless mis02a: frames over 0.3 41 of 86 with it on, 1 of 80 off. On mis02b, mis07a and mis09 every draw of that kind is the full screen quad (4, 1, 9), so nothing else goes.
