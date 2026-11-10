@@ -59,16 +59,12 @@ X86_FUNC(sub_0014A840) {
     kernel::W32(past_key, kept);
 }
 
-// Hit flash (auf::hit_flash): taking damage, the player's code at 0xBB4A6 posts setflashcolor 1 1 1 0.3, a white pulse, which
-// 0x71110 hands at once to the handler 0xAF9E0 (thiscall, the event, ret 4). From that path the damage code's return, 0xBB4F4,
-// is 0x18 up the stack: then it is left out when the setting is off. Scripts' own flashes still play.
-X86_EXTERN_FUNC(__imp__sub_000AF230);
-X86_FUNC(sub_000AF230) {
-    if (!auf::hit_flash && kernel::R32(ctx.esp + 0x18) == A(0xBB4F4)) {
-        LOG_FIRST(1, "auf: the hit flash left out (hit_flash off)");
-        ctx.esp += 8;  // the return address and the event
-        return;
-    }
-    __imp__sub_000AF230(ctx, base);
+// Hit flash (auf::hit_flash): the HUD's draw 0x53840 (ebx its player's view) fills the screen white at the alpha [ebx+0x30], which
+// damage raises and time lowers, and skips the fill at 0 (0x539A9 to 0x53A5B). With the setting off the alpha is 0 there, so
+// the fill is left out. (The player's setflashcolor at 0xBB4A6 is not the flash on screen: its handler never runs on a hit.)
+void NoHitFlash(X86Context& ctx, uint8_t*) {
+    if (auf::hit_flash || kernel::R32(ctx.ebx + 0x30) == 0) return;
+    LOG_FIRST(1, "auf: the hit flash left out (hit_flash off)");
+    kernel::W32(ctx.ebx + 0x30, 0);
 }
 

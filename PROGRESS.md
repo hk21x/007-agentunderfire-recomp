@@ -23,6 +23,10 @@ Newest first. Each entry: date, what changed, what was learned, what's next.
 
 ## Log
 
+### 2026-11-10 - Issue #7 again: the hit flash is the HUD's own white fill
+- Harry: the white flash when shot stays with Hit Flash off. Headless in Mediterranean Crisis (Bond shot on the ship), the setflashcolor handler 0xAF9E0 never ran; a full screen untextured blended quad (FVF 0x44, the frame's last draw) came on the hit frames, which the reference pictures show paler. Its source, found by logging every large 2D box with its caller: 0x53840 (from 0x555D4) fills 640x480 white (1,1,1) at alpha [ebx+0x30], skipped at 0.
+- Now a hook at 0x539A9 sets that alpha to 0 when hit_flash is off (mapped to French, German, USA). The 0xAF9E0 override is gone.
+
 ### 2026-11-09 - Issue #4: 16:10 screens filled (SDK at the fork's main 89cafb8)
 - The SDK session's aspect-16x10 reached fork main with Harry's go (with the all-games candidate: EoN's line, per-size colour targets, F1 placement on resize). AUF sets `.fills_narrow_screens = true`: on a 16:10 or 3:2 screen the console reports a 4:3 TV, the views widen by FrameAspect / 4:3 (1.2 on 16:10) and the 2D stays 4:3 in the middle.
 - Harry tested that branch on Windows at 1280x800 ("fine"); here smoke, and smoke with OUTPUT=1280x800.
