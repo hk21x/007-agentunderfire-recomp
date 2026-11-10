@@ -25,7 +25,7 @@ Newest first. Each entry: date, what changed, what was learned, what's next.
 
 ### 2026-11-10 - The multi-core renderer measured on Harry's PC (branch mt2)
 - Mediterranean Crisis, about 25 s of play each, D3D12 at 3440x1440, cap unlimited, vsync off (5800X3D, RX 7900 XT). New: 265 fps mean (worst second 184), 3.97 ms a frame, render thread 1.66 ms. Old settings (XBE_PRE_ASSEMBLE, RECORD_THREAD, PLACED_TEXTURES, DEFER_COPIES all 0): 270 fps (worst 198), 3.85 ms, render thread 2.53 ms.
-- The render thread's time drops a third and the frame rate does not move: with merged draws (about 550 a frame) AUF is held by the title thread or the GPU here. No regression found; Harry has not reported on the picture yet. Sent to the PGR2 session.
+- The render thread's time drops a third and the frame rate does not move: with merged draws (about 550 a frame) AUF is held by the title thread or the GPU here. No regression found; Harry on the picture: "Nope both games looked great" (no difference between the two). Sent to the PGR2 session.
 
 ### 2026-11-10 - Issue #7, the driving levels: their hit flash
 - Harry's log: Hit Flash off, flash still there, in DRIVING.XBE (the gun of mission 2): the on-foot fix does not reach the driving program. There the flash is a full screen quad through a vertex program, untextured, additive (ONE, ONE). On mis02a's gun its frames were the bright ones (0.3 to 0.74 against about 0.2).
