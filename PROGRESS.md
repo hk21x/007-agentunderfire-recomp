@@ -23,6 +23,9 @@ Newest first. Each entry: date, what changed, what was learned, what's next.
 
 ## Log
 
+### 2026-11-11 - SDK at the fork's main 8d9815a: the multi-core renderer on main
+- Fork main now holds render-mt2 (measured on Harry's PC on branch mt2: same frame rate, the render thread a third lighter, the picture unchanged), host-read-retry (failed host reads asked again and logged: the map-load deaths off the VM's share), PGR2 1.6.3 and EoN's interp work. AUF's main pins it; branch mt2 is done.
+
 ### 2026-11-10 - Release 1.0.2
 - Published by Harry: the Hit Flash setting (#7), 16:10 and 3:2 screens (#4), R reloads mounted guns (#8), the launcher's in-place update, SDK 89cafb8. Tag v1.0.2 at 9fef360; packages built on the Windows VM from clean clones with LLVM 22.1.3 (PAL 83,571,087 bytes, USA 78,527,498), their .json checked against the zips.
 - Next: the multi-core renderer (branch mt2) once render-mt2 is on fork main; issue #6 waits on the player's logs.
