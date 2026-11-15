@@ -9,6 +9,7 @@
 // Unlimited as chosen: app::g_pace_hz lifts the console's 60 from a present interval).
 // AUF_30FPS=1 keeps the console's.
 #include "bond/addr.h"
+#include <cmath>
 #include <cstdlib>
 
 #include "app/app.h"
@@ -54,4 +55,27 @@ X86_FUNC(sub_001381E0) {
         if (measured > 0 && measured < 0.1f) kernel::G<float>(kBlankSeconds) = measured;
     }
     __imp__sub_001381E0(ctx, base);
+}
+
+// Stairs (issue #9): 0xC5340, the player's move with steps (0x3B30B8 the move, its +0 the player's state: origin at +0x14,
+// velocity at +0x24), sets a step's climb as a slope: each call takes a share of the speed across the ground (at 60 a
+// second about a sixth), and acceleration gives it back by time. Faster frames took that share more often: at 240 Bond
+// climbed at about 125 units a second against 205. On a step up in a frame shorter than the console's, the speed kept is
+// the share kept at 60 raised to the frame's part of a sixtieth, so a second of climbing loses as much at any rate.
+X86_EXTERN_FUNC(__imp__sub_000C4B80);
+X86_FUNC(sub_000C4B80) {
+    const uint32_t ps = kernel::R32(kernel::R32(A(0x3B30B8)));
+    const float dt = kernel::G<float>(A(0x335460));
+    const float z = kernel::G<float>(ps + 0x1C), vx = kernel::G<float>(ps + 0x24), vy = kernel::G<float>(ps + 0x28);
+    __imp__sub_000C4B80(ctx, base);
+    if (!Unlocked() || dt <= 0 || dt >= 1.0f / 60) return;
+    if (kernel::G<float>(ps + 0x1C) <= z + 0.01f) return;  // not a step up
+    const float before = std::sqrt(vx * vx + vy * vy);
+    float& nx = kernel::G<float>(ps + 0x24);
+    float& ny = kernel::G<float>(ps + 0x28);
+    const float after = std::sqrt(nx * nx + ny * ny);
+    if (before <= 1 || after <= 0 || after >= before) return;
+    const float kept = std::pow(after / before, dt * 60);
+    nx *= before * kept / after;
+    ny *= before * kept / after;
 }

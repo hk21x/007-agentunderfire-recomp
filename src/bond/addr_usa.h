@@ -10,6 +10,7 @@
         case 0x2A9C24: return 0x2A9514; \
         case 0x2A9CA8: return 0x2A9598; \
         case 0x2A9F98: return 0x2A9888; \
+        case 0x335460: return 0x334D50; \
         case 0x346788: return 0x346078; \
         case 0x3467B8: return 0x3460A8; \
         case 0x346DB0: return 0x3466A0; \
@@ -19,4 +20,5 @@
         case 0x3B2420: return 0x3B1D20; \
         case 0x3B2428: return 0x3B1D28; \
         case 0x3B2D08: return 0x3B2608; \
+        case 0x3B30B8: return 0x3B29B8; \
 

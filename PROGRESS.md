@@ -23,6 +23,11 @@ Newest first. Each entry: date, what changed, what was learned, what's next.
 
 ## Log
 
+### 2026-11-15 - Issue #9: stairs at high frame rates
+- Harry's recordings (counter 235, 60, 30 fps): the same steps took 3.7 s at 235 against about 2.3 at 60 and 30.
+- Traced 0xC5340 (the player's move with steps; 0x3B30B8 the move, +0 the state: origin +0x14, velocity +0x24): a step up projects the speed onto a slope, keeping a share each call (about 84% at 60, 90% at 240), and acceleration returns it by time. At 240 Bond settled near 120 units a second on stairs against 205 at 60.
+- Fix (src/bond/framerate.cpp, on foot uncapped only): after a step up in a frame shorter than 1/60, the speed kept is the kept share raised to the frame's part of a sixtieth. Headless Bad Diplomacy stairs, 30 units climbed: 60 fps 0.30 s; 240 fps 0.35 s with it, not reached in the trace before; speed on the stairs at 240 about 203.
+
 ### 2026-11-15 - Issue #9 (slower up stairs at high frame rates): not reproduced headless
 - Three tries on Bad Diplomacy's opening stairs, the same walk at 60 and 240 fps: by screenshots at matching frames, then every half second, then a snapshot each second after the walk began. The runs never started from the same place (at 60 Bond was already at the top when the walk began, at 240 at the foot) and the 240 run tripped the alarm, so nothing compares. REF slows the harness enough to change the game's timing.
 - Next: Bond's position read from memory each second, or a timed climb on Harry's PC at 60 and 240.
