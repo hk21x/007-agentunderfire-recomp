@@ -25,7 +25,7 @@ void RunCommand(X86Context& ctx, uint8_t* base, const char* line) {
     X86_PUSH32(A(0x138760));
     sub_0014DF00(ctx, base);
     ctx.esp = esp;
-    LOG_FIRST(16, "auf: console \"%s\"", line);
+    LOGR_FIRST(40, "auf: console \"%s\"", line);
 }
 
 void CheatsFrame(X86Context& ctx, uint8_t* base) {
@@ -35,10 +35,19 @@ void CheatsFrame(X86Context& ctx, uint8_t* base) {
     static bool god = false, ammo = false;
     static auto next = std::chrono::steady_clock::now();
     frames++;
-    if (MenuUp() || PlayerFree() == false) return;
+    if (MenuUp() || PlayerFree() == false) {
+        static bool was_menu = true;
+        const bool menu = MenuUp();
+        if ((cheat_god || cheat_ammo) && menu != was_menu) LOGR_FIRST(20, "auf: cheats wait: %s", menu ? "a menu is up" : "Bond is not free");
+        was_menu = menu;
+        return;
+    }
     const bool any = cheat_god || cheat_ammo;
     const uint32_t cvar = kernel::R32(A(0x328C7C));
-    if (!cvar) return;
+    if (!cvar) {
+        LOGR_FIRST(4, "auf: cheats wait: no cheats cvar");
+        return;
+    }
     if (any) {
         kernel::W32(cvar + 0x20, 1);
         kernel::G<float>(cvar + 0x1C) = 1;
@@ -49,6 +58,13 @@ void CheatsFrame(X86Context& ctx, uint8_t* base) {
     if (cheat_god != god || (cheat_god && again)) {
         RunCommand(ctx, base, cheat_god ? "god 1" : "god 0");
         god = cheat_god;
+    }
+    // diagnostics: the cvars as the game holds them, every 5 s while a cheat is on (the first 24)
+    static auto next_report = now;
+    if (any && now >= next_report) {
+        next_report = now + std::chrono::seconds(5);
+        const uint32_t ua = kernel::R32(A(0x328F90));
+        LOGR_FIRST(24, "auf: cheats: cvar cheats %d, g_unlimited_ammo %d", int(kernel::R32(cvar + 0x20)), ua ? int(kernel::R32(ua + 0x20)) : -1);
     }
     if (cheat_ammo != ammo) {
         RunCommand(ctx, base, cheat_ammo ? "set g_unlimited_ammo 1" : "set g_unlimited_ammo 0");

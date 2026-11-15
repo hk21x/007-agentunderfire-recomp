@@ -12,6 +12,7 @@
         case 0x2A9CA8: return 0x2A9598; \
         case 0x2A9F98: return 0x2A9888; \
         case 0x328C7C: return 0x32856C; \
+        case 0x328F90: return 0x328880; \
         case 0x335460: return 0x334D50; \
         case 0x346788: return 0x346078; \
         case 0x3467B8: return 0x3460A8; \
