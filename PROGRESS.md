@@ -23,6 +23,11 @@ Newest first. Each entry: date, what changed, what was learned, what's next.
 
 ## Log
 
+### 2026-11-15 - Issue #9 (slower up stairs at high frame rates): not reproduced headless
+- Three tries on Bad Diplomacy's opening stairs, the same walk at 60 and 240 fps: by screenshots at matching frames, then every half second, then a snapshot each second after the walk began. The runs never started from the same place (at 60 Bond was already at the top when the walk began, at 240 at the foot) and the 240 run tripped the alarm, so nothing compares. REF slows the harness enough to change the game's timing.
+- Next: Bond's position read from memory each second, or a timed climb on Harry's PC at 60 and 240.
+- #12's freeze: the SDK session's pad-thread d132bd5 (SDL's pump off the game's thread), not on fork main yet; the reporter can test SDL_JOYSTICK_HIDAPI=0 meanwhile.
+
 ### 2026-11-15 - Issue #3: the pause menu's sounds with the mouse
 - The game's d-pad plays one of nine move sounds at random (0x39143 and about fifty more places: 0x15 + rand() % 9), and src/bond/pointer.cpp did the same for each item the mouse reached: a sweep across a menu played a string of different sounds. The pointer now plays the first (0x15), at most every 120 ms. The driving pause plays the game's own step sound and is unchanged.
 - Not heard headless (no sound, no mouse hover there): Harry's test.
