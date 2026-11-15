@@ -23,6 +23,10 @@ Newest first. Each entry: date, what changed, what was learned, what's next.
 
 ## Log
 
+### 2026-11-15 - Issue #3: the pause menu's sounds with the mouse
+- The game's d-pad plays one of nine move sounds at random (0x39143 and about fifty more places: 0x15 + rand() % 9), and src/bond/pointer.cpp did the same for each item the mouse reached: a sweep across a menu played a string of different sounds. The pointer now plays the first (0x15), at most every 120 ms. The driving pause plays the game's own step sound and is unchanged.
+- Not heard headless (no sound, no mouse hover there): Harry's test.
+
 ### 2026-11-11 - SDK at the fork's main 8d9815a: the multi-core renderer on main
 - Fork main now holds render-mt2 (measured on Harry's PC on branch mt2: same frame rate, the render thread a third lighter, the picture unchanged), host-read-retry (failed host reads asked again and logged: the map-load deaths off the VM's share), PGR2 1.6.3 and EoN's interp work. AUF's main pins it; branch mt2 is done.
 - Then 40a735b: 8d9815a's retried-read log line (disc.cpp, logx::Write) left every launcher unlinked (undefined symbol); 40a735b links runtime/core/log.cpp into launcher_core. launcher_cli links here.

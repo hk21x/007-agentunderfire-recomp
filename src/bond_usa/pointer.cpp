@@ -7,6 +7,7 @@
 // Rectangles are the pictures' and the text's own: mode 1 is a fraction of 640x480, 0 pixels (0x56570).
 #include "bond/addr.h"
 #include <atomic>
+#include <chrono>
 #include <cstdint>
 
 #include "common/auf.h"
@@ -123,8 +124,14 @@ X86_FUNC(sub_00056440) {
             if (current) Call1(ctx, base, sub_00037700, current);  // none on the PC Settings tab's strip
             Call1(ctx, base, sub_00037660, hit);
             kernel::W32(page + kPageCurrent, hit);
-            static uint32_t sound = 0;
-            Call1(ctx, base, sub_00020290, 0x15 + sound++ % 9);
+            // the d-pad plays one of nine move sounds at random (0x39143: 0x15 + rand() % 9); a sweep of the mouse across the
+            // rows played a string of different ones (issue #3), so the pointer plays the first, at most every 120 ms
+            static std::chrono::steady_clock::time_point last_sound{};
+            const auto now = std::chrono::steady_clock::now();
+            if (now - last_sound >= std::chrono::milliseconds(120)) {
+                last_sound = now;
+                Call1(ctx, base, sub_00020290, 0x15);
+            }
             current = hit;
             LOGR("auf: the pointer's item is %u of %u", (hit - list) / kItemSize, count);
         }
