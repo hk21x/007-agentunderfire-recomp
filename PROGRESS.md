@@ -26,6 +26,7 @@ Newest first. Each entry: date, what changed, what was learned, what's next.
 ### 2026-11-15 - Issue #9 again: Bond drifted aside on stairs
 - Harry: stairs not fixed, and walking straight at them Bond goes off at a diagonal. The first fix scaled the velocity after the call up to the kept speed, so a step's sideways turn was magnified. Now the call's change to the ground speed is scaled by the frame's part of a sixtieth (the heading stays as the game turned it).
 - Bad Diplomacy's stairs, traced: 10/20/30 units climbed in 0.08/0.19/0.30 s at 240 against 0.08/0.18/0.30 at 60; the path's heading over the climb -158.4 against -158.6 degrees (input -169.5 in both: the game's own turn on those steps).
+- Harry on Windows (b14f526, 2026-11-15): "Stairs are fixed."
 - Cheats on Harry's PC did nothing in a mission. Headless in Mission 1 the commands run (god 1 every two seconds, g_unlimited_ammo); his log is needed.
 
 ### 2026-11-15 - Issue #5: a Cheats tab (Invincible, Unlimited Ammo)
