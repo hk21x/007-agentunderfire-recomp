@@ -23,6 +23,12 @@ Newest first. Each entry: date, what changed, what was learned, what's next.
 
 ## Log
 
+### 2026-11-15 - Issue #5: Invincible and Unlimited Ammo work on Windows
+- Harry's log showed the commands running, but his recording showed damage taken and the Golden Gun's spare ammo running out (36, 24, 12, Fist; the AK47 read "Unlimited").
+- "god 1" from the console goes to the game's server console (0x29150, export +0x48), never to a player: its handler 0xB52A0 never ran, and headless Bond's health fell 500 to 270 under fire. Invincible now sets god's flag (8 at +0x1C4, tested by the damage at 0xAC3FA) on client 0's entity ([0x329390]+0x278) each frame: health held at 500 through the same run.
+- The Golden Gun (SPGoldenGun) has its own unlimited test at vtable +0x1F4 (0x9CFF0, bit 11 of +0x56C) that ignores g_unlimited_ammo; overridden to answer yes while the cvar is set. Unlimited Ammo means endless spare ammo; magazines still reload (0x9D530, 0x9E530).
+- Harry on Windows (af578aa): "Both now work." The 5-second cvar report removed; next for #5: weapons, missions and medals unlocks, driving, one-hit kill.
+
 ### 2026-11-15 - Issue #9 again: Bond drifted aside on stairs
 - Harry: stairs not fixed, and walking straight at them Bond goes off at a diagonal. The first fix scaled the velocity after the call up to the kept speed, so a step's sideways turn was magnified. Now the call's change to the ground speed is scaled by the frame's part of a sixtieth (the heading stays as the game turned it).
 - Bad Diplomacy's stairs, traced: 10/20/30 units climbed in 0.08/0.19/0.30 s at 240 against 0.08/0.18/0.30 at 60; the path's heading over the climb -158.4 against -158.6 degrees (input -169.5 in both: the game's own turn on those steps).

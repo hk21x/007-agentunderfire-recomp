@@ -4,7 +4,6 @@
 // export at +0x48), not to a player, and never reached Bond: Invincible sets the flag god sets (0xB52A0: 8 at the player's
 // +0x1C4, which the damage at 0xAC3FA tests) on client 0's entity ([clients 0x329390] +0x278, as 0x6BFA0 finds it).
 #include "bond/addr.h"
-#include <chrono>
 #include <cstdlib>
 #include <cstring>
 #include <string>
@@ -68,7 +67,6 @@ void CheatsFrame(X86Context& ctx, uint8_t* base) {
         kernel::W32(cvar + 0x20, 1);
         kernel::G<float>(cvar + 0x1C) = 1;
     }
-    const auto now = std::chrono::steady_clock::now();
     const uint32_t clients = kernel::R32(A(0x329390));
     const uint32_t bond = clients ? kernel::R32(clients + 0x278) : 0;
     if (bond && (cheat_god || god)) {
@@ -76,13 +74,6 @@ void CheatsFrame(X86Context& ctx, uint8_t* base) {
         kernel::W32(bond + 0x1C4, cheat_god ? flags | 8 : flags & ~8u);
         if (cheat_god != god) LOGR_FIRST(20, "auf: invincible %s", cheat_god ? "on" : "off");
         god = cheat_god;
-    }
-    // diagnostics: the cvars as the game holds them, every 5 s while a cheat is on (the first 24)
-    static auto next_report = now;
-    if (any && now >= next_report) {
-        next_report = now + std::chrono::seconds(5);
-        const uint32_t ua = kernel::R32(A(0x328F90));
-        LOGR_FIRST(24, "auf: cheats: cvar cheats %d, g_unlimited_ammo %d", int(kernel::R32(cvar + 0x20)), ua ? int(kernel::R32(ua + 0x20)) : -1);
     }
     if (cheat_ammo != ammo) {
         RunCommand(ctx, base, cheat_ammo ? "set g_unlimited_ammo 1" : "set g_unlimited_ammo 0");
