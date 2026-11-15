@@ -23,6 +23,10 @@ Newest first. Each entry: date, what changed, what was learned, what's next.
 
 ## Log
 
+### 2026-11-15 - Release 1.0.3
+- Published by Harry: Invincible and Unlimited Ammo (#5), stairs at high frame rates (#9), one menu move sound (#3), SDK 40a735b (multi-core renderer, disc reads retried). Tag v1.0.3 at dd266f4; packages built on the Windows VM from clean clones with LLVM 22.1.3 (PAL 83,793,607 bytes, USA 78,643,002), their .json checked against the zips.
+- Replies drafted for #9 (close), #3 and #5 (open: dev console, gadgets; the other cheats).
+
 ### 2026-11-15 - Issue #5: Invincible and Unlimited Ammo work on Windows
 - Harry's log showed the commands running, but his recording showed damage taken and the Golden Gun's spare ammo running out (36, 24, 12, Fist; the AK47 read "Unlimited").
 - "god 1" from the console goes to the game's server console (0x29150, export +0x48), never to a player: its handler 0xB52A0 never ran, and headless Bond's health fell 500 to 270 under fire. Invincible now sets god's flag (8 at +0x1C4, tested by the damage at 0xAC3FA) on client 0's entity ([0x329390]+0x278) each frame: health held at 500 through the same run.
