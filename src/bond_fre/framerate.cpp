@@ -55,6 +55,7 @@ X86_FUNC(sub_00138670) {
         if (measured > 0 && measured < 0.1f) kernel::G<float>(kBlankSeconds) = measured;
     }
     __imp__sub_00138670(ctx, base);
+    auf::CheatsFrame(ctx, base);
 }
 
 // Stairs (issue #9): 0xC5340, the player's move with steps (0x3B30B8 the move, its +0 the player's state: origin at +0x14,

@@ -14,26 +14,30 @@ enum Id {
     kRenderScale, kMsaa, kFxaa, kAlphaEdges, kFiltering, kSharpening, kScaleFilter, kSharpText, kWorldTextures, kFrameCounter,
     kDisplayMode, kVsync, kFrameCap, kAspect, kRenderer, kFps60, kFov,
     kMouseSpeed, kInvertMouse, kAutoAim,
-    kLanguage, kSkipIntro, kPauseUnfocused, kHitFlash, kMore, kIds
+    kLanguage, kSkipIntro, kPauseUnfocused, kHitFlash, kMore,
+    kGod, kAmmo, kIds
 };
 const char* const kRowNames[3] = {"PC Settings", "Param\xE8tres PC", "PC-Einstellungen"};
 const char* const kTabLabel[3] = {"Page", "Page", "Seite"};
-const char* const kTabNames[3][5] = {{"Graphics", "Picture", "Display", "Controls", "Game"},
-                                     {"Graphismes", "Image", "Affichage", "Commandes", "Jeu"},
-                                     {"Grafik", "Bild", "Anzeige", "Steuerung", "Spiel"}};
+const char* const kTabNames[3][6] = {{"Graphics", "Picture", "Display", "Controls", "Game", "Cheats"},
+                                     {"Graphismes", "Image", "Affichage", "Commandes", "Jeu", "Triches"},
+                                     {"Grafik", "Bild", "Anzeige", "Steuerung", "Spiel", "Cheats"}};
 const char* const kLabels[3][kIds] = {
     {"Render Scale", "MSAA", "Edge Smoothing", "Smooth Alpha Edges", "Texture Filtering", "Sharpening", "Scaling Filter", "Sharp Text and HUD", "Enhanced Textures", "Frame Counter",
      "Display Mode", "Vertical Sync", "Frame Rate Cap", "Aspect Ratio *", "Renderer *", "High Frame Rate *", "Field of View",
      "Mouse Sensitivity", "Invert Mouse", "Auto-aim",
-     "Language *", "Skip Intro Movies", "Pause in Background", "Hit Flash", "More Settings"},
+     "Language *", "Skip Intro Movies", "Pause in Background", "Hit Flash", "More Settings",
+     "Invincible", "Unlimited Ammo"},
     {"\xC9" "chelle de rendu", "MSAA", "Lissage des bords", "Bords alpha lisses", "Filtrage des textures", "Nettet\xE9", "Filtre d'\xE9" "chelle", "Texte et ATH nets", "Textures am\xE9lior\xE9" "es", "Compteur d'images",
      "Mode d'affichage", "Synchro verticale", "Limite d'images", "Format d'image *", "Moteur de rendu *", "Images/s \xE9lev\xE9" "es *", "Champ de vision",
      "Sensibilit\xE9 souris", "Inverser la souris", "Vis\xE9" "e auto",
-     "Langue *", "Passer les intros", "Pause en arri\xE8re-plan", "Flash si touch\xE9", "Plus d'options"},
+     "Langue *", "Passer les intros", "Pause en arri\xE8re-plan", "Flash si touch\xE9", "Plus d'options",
+     "Invincible", "Munitions illimit\xE9" "es"},
     {"Renderskalierung", "MSAA", "Kantengl\xE4ttung", "Weiche Alpha-Kanten", "Texturfilterung", "Sch\xE4rfe", "Skalierungsfilter", "Scharfer Text und HUD", "Bessere Texturen", "Bildz\xE4hler",
      "Anzeigemodus", "V-Sync", "Bildratenlimit", "Seitenverh\xE4ltnis *", "Renderer *", "Hohe Bildrate *", "Sichtfeld",
      "Mausempfindlichkeit", "Maus invertieren", "Zielhilfe",
-     "Sprache *", "Intros \xFC" "berspringen", "Pause im Hintergrund", "Treffer-Blitz", "Weitere Optionen"}};
+     "Sprache *", "Intros \xFC" "berspringen", "Pause im Hintergrund", "Treffer-Blitz", "Weitere Optionen",
+     "Unverwundbar", "Unbegrenzte Munition"}};
 const char* const kBilinear[3] = {"Bilinear", "Bilin\xE9" "aire", "Bilinear"};
 const char* const kSharp[3] = {"Sharp", "Net", "Scharf"};
 const char* const kOff[3] = {"Off", "Non", "Aus"};
@@ -47,11 +51,12 @@ struct Tab {
     int count;
     int ids[kPcRows - 1];
 };
-const Tab kTabs[5] = {{7, {kRenderScale, kMsaa, kFxaa, kAlphaEdges, kFiltering, kSharpening, kScaleFilter}},
+const Tab kTabs[6] = {{7, {kRenderScale, kMsaa, kFxaa, kAlphaEdges, kFiltering, kSharpening, kScaleFilter}},
                       {4, {kSharpText, kWorldTextures, kFrameCounter, kMore}},
                       {7, {kDisplayMode, kVsync, kFrameCap, kAspect, kRenderer, kFps60, kFov}},
                       {4, {kMouseSpeed, kInvertMouse, kAutoAim, kMore}},
-                      {5, {kLanguage, kSkipIntro, kPauseUnfocused, kHitFlash, kMore}}};
+                      {5, {kLanguage, kSkipIntro, kPauseUnfocused, kHitFlash, kMore}},
+                      {2, {kGod, kAmmo}}};  // on foot only (src/bond/cheats.cpp)
 int g_tab = 0;
 
 int IdOf(int row) { return kTabs[g_tab].ids[(row - 1) % kTabs[g_tab].count]; }
@@ -103,6 +108,8 @@ std::string Plain(int id, int lang) {
         case kLanguage: return s.language == 3 ? "Deutsch" : s.language == 4 ? "Fran\xE7" "ais" : "English";
         case kSkipIntro: return onoff(skip_intro);
         case kHitFlash: return onoff(hit_flash);
+        case kGod: return onoff(cheat_god);
+        case kAmmo: return onoff(cheat_ammo);
         case kPauseUnfocused: return onoff(s.pause_unfocused);
         default: break;
     }
@@ -136,7 +143,7 @@ int Language() {
 
 void PcStep(int row, int dir) {
     if (!row) {
-        g_tab = (g_tab + 5 + dir) % 5;
+        g_tab = (g_tab + 6 + dir) % 6;
         return;
     }
     app::Settings& s = app::Get();
@@ -185,6 +192,8 @@ void PcStep(int row, int dir) {
         }
         case kSkipIntro: skip_intro = !skip_intro; break;
         case kHitFlash: hit_flash = !hit_flash; break;
+        case kGod: cheat_god = !cheat_god; break;
+        case kAmmo: cheat_ammo = !cheat_ammo; break;
         case kPauseUnfocused: s.pause_unfocused = !s.pause_unfocused; break;
         case kMore: app::ToggleOverlay(); return;
         default: return;

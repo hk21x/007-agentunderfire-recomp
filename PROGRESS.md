@@ -23,6 +23,12 @@ Newest first. Each entry: date, what changed, what was learned, what's next.
 
 ## Log
 
+### 2026-11-15 - Issue #5: a Cheats tab (Invincible, Unlimited Ammo)
+- The game kept Quake III's console: 0x14DF00 (cdecl, the line) runs a command at once. A command marked a cheat (event flag 2) runs while the "cheats" cvar's integer (+0x20) is set, checked at 0x710A2 (the cvar at [0x328C7C]; French 0x3294BC, German 0x328F9C, USA 0x32856C, each read from its own check).
+- PC Settings' new Cheats tab, also in settings.toml and F1: Invincible runs "god 1" (again every two seconds, a new mission being a new player), Unlimited Ammo "set g_unlimited_ammo 1". On foot only; applied each frame from 0x138760 while no menu is up (src/bond/cheats.cpp). AUF_CHEATS=god,ammo headless.
+- Evidence: Mediterranean Crisis' firefight, Bond dead about frame 9000 without, alive to the end with Invincible; the HUD's ammo reads "Unlimited".
+- Not done: all weapons (give takes neither "all" nor a pickup's name; the scripts use the player's giveweapon event), unlocking every mission, driving cheats, the developer console.
+
 ### 2026-11-15 - Issue #9: stairs at high frame rates
 - Harry's recordings (counter 235, 60, 30 fps): the same steps took 3.7 s at 235 against about 2.3 at 60 and 30.
 - Traced 0xC5340 (the player's move with steps; 0x3B30B8 the move, +0 the state: origin +0x14, velocity +0x24): a step up projects the speed onto a slope, keeping a share each call (about 84% at 60, 90% at 240), and acceleration returns it by time. At 240 Bond settled near 120 units a second on stairs against 205 at 60.
