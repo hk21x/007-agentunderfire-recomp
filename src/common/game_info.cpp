@@ -18,6 +18,7 @@ bool skip_intro = false;
 bool uncapped = true;
 bool auto_aim = false;
 bool hit_flash = true;
+bool hud_edges = true;
 bool cheat_god = false, cheat_ammo = false;
 uint32_t fov_percent = 100;
 
@@ -72,6 +73,7 @@ void Init() {
         auf::cheat_ammo = c.find("ammo") != std::string::npos;
     }
     if (const char* e = std::getenv("AUF_HIT_FLASH"); e && *e) auf::hit_flash = *e == '1';
+    if (const char* e = std::getenv("AUF_HUD_EDGES"); e && *e) auf::hud_edges = *e == '1';
     if (const char* e = std::getenv("AUF_FOV"); e && *e) auf::fov_percent = uint32_t(std::atoi(e));
     if (auf::skip_intro) LOGR("auf: the logo movies are skipped (skip_intro)");
     if (kDrv) gpu::g_draw_filter = DrivingFlashFilter;  // here, not a static initializer: those never ran in the Windows exe
@@ -199,6 +201,8 @@ const app::GameInfo app::kGame = {
     .options = {{"skip_intro", &auf::skip_intro, nullptr, "Skip intro movies", "Starts without the EA, MGM and logo movies"},
                 {"auto_aim", &auf::auto_aim, nullptr, "Auto-aim", "The game's aim assist, on foot and on mounted guns. Off by default"},
                 {"hit_flash", &auf::hit_flash, nullptr, "Hit flash", "The white flash on screen when Bond is hit. On by default; off for those it troubles"},
+                {"hud_edges", &auf::hud_edges, nullptr, "HUD at the screen's edges",
+                 "On a wide screen the health ring and the weapon panel sit near the screen's edges, as on a 4:3 TV. Off keeps them in the 4:3 middle"},
                 {"cheat_god", &auf::cheat_god, nullptr, "Cheat: invincible", "On foot: Bond takes no damage"},
                 {"cheat_ammo", &auf::cheat_ammo, nullptr, "Cheat: unlimited ammo", "On foot: weapons never run out"},
                 {"uncapped", &auf::uncapped, nullptr, "High frame rate",

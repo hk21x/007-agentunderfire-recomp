@@ -23,7 +23,7 @@ void Layout(float shape) {
 
 bool HudSpreadBegin(bool allowed) {
     const float layout = app::HudAspect(), frame = app::FrameAspect();
-    if (!allowed || frame <= layout + 1e-3f || MenuUp()) return false;
+    if (!allowed || !hud_edges || frame <= layout + 1e-3f || MenuUp()) return false;
     static bool said = false;
     if (!said) said = true, LOGR("auf: the HUD at the frame's edges (laid out at %.3f:1, the frame %.3f:1)", layout, frame);
     Layout(layout);

@@ -17,6 +17,7 @@ extern const int kImage;      // which exe this is (each image's hooks.cpp)
 extern bool skip_intro;
 extern bool uncapped;         // on foot paced by the frame rate cap, not the console's 30 (src/bond/framerate.cpp); driving at 60, not 50 (src/driving/hooks.cpp)
 extern bool cheat_god, cheat_ammo;  // the Cheats tab, on foot (src/bond/cheats.cpp)
+extern bool hud_edges;        // the HUD at the frame's edges on a wide screen, on by default (src/common/hud.cpp)
 extern bool hit_flash;        // the white flash when Bond is hit, on by default (src/bond/hooks.cpp)
 extern bool auto_aim;         // the game's auto-aim, off by default (src/bond/mouse.cpp, src/driving/mouse.cpp)
 extern uint32_t fov_percent;  // the 3D views' field of view, percent of the game's
