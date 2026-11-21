@@ -50,6 +50,10 @@ std::string PcValue(int row, int lang);
 int PcClickDir(float value_x);   // what a press of A does to a value: down with the mouse on its left arrow
 void PcStep(int row, int dir);   // row 0 the tab; More Settings opens the settings window
 bool PointerWanted();             // the arrow shows: each image's own test
+// the HUD's pieces to each side kept at their 4:3 distance from the frame's edges while its draw runs (src/common/hud.cpp;
+// the draws: src/bond/hud.cpp, src/driving/hud.cpp); true when it took effect, to pass back to HudSpreadEnd
+bool HudSpreadBegin(bool allowed);
+void HudSpreadEnd(bool began);
 void PcSettingsFrame(X86Context& ctx, uint8_t* base, uint32_t file);  // src/bond/pc_settings.cpp
 
 }  // namespace auf
