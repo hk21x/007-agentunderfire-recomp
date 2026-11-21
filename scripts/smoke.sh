@@ -47,7 +47,7 @@ o=d.index(b'BOND_ENG.XBE'); d[o:o+12]=('BOND_%s.XBE'%l.upper()).encode()
 loc={'fre':b'IDL_FR.LOC','ger':b'IDL_GER.LOC'}[l]; o=d.index(b'IDL_ENG.LOC'); d[o:o+len(loc)+1]=loc+b'\0'
 open(sys.argv[3],'wb').write(d)
 PY
-    AUF_MOUSE_TEST=20,0,100,200 bash sdk/harness/run.sh -x .local/harness_$l/bond_$l -g "${GAME:-assets}" -o $d -t 110 -s scripts/pad/explore.txt >> .local/smoke_lang.out 2>&1 &
+    AUF_MOUSE_TEST=20,0,25,3000 bash sdk/harness/run.sh -x .local/harness_$l/bond_$l -g "${GAME:-assets}" -o $d -t 110 -s scripts/pad/explore.txt >> .local/smoke_lang.out 2>&1 &
 done
 wait
 for l in fre ger; do
