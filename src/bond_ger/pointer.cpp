@@ -113,8 +113,14 @@ X86_FUNC(sub_00056940) {
         const bool press = (PointerButtons() & 1) != 0;
         const bool moved = x != last_x || y != last_y;
         last_x = x, last_y = y;
+        // the pointer moved onto another item: wanted until the menu takes it. The menu is busy while a move's animation
+        // plays (0x39CC0), and a quick flick ended on its item during one: that move was skipped, and with the mouse
+        // still nothing asked again, the highlight left on an item on the way (issue #12, the pause menu)
+        static bool wanted = false;
+        if (!hit || hit == current) wanted = false;
+        else if (moved) wanted = true;
         bool free = false;
-        if (hit && hit != current && (moved || (press && !last_press)) && !kernel::R32(file + 0x54)) {
+        if (hit && hit != current && (wanted || (press && !last_press)) && !kernel::R32(file + 0x54)) {
             X86_PUSH32(0x56930u);  // no arguments: 0x40A45 asks before a press is taken
             sub_00039CC0(ctx, base);
             free = ctx.eax == 0;
@@ -133,6 +139,7 @@ X86_FUNC(sub_00056940) {
                 Call1(ctx, base, sub_000202E0, 0x15);
             }
             current = hit;
+            wanted = false;
             LOGR("auf: the pointer's item is %u of %u", (hit - list) / kItemSize, count);
         }
         last_press = press;
