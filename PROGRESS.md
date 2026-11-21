@@ -23,6 +23,27 @@ Newest first. Each entry: date, what changed, what was learned, what's next.
 
 ## Log
 
+### 2026-11-21 - Issues 12, 13, 14, 16 toward 1.0.4 (branch auf-104, sdk branch auf-104)
+- SDK auf-104: fork main 068400d with pad-thread (d132bd5, issue 12's mouse stall: SDL pumped on its own thread) merged in.
+- #14 (Sharp text and HUD marked the lightmaps' edges): a texture any 2D draw sampled got Sharpen2D's mask-sharpened picture as
+  its stand-in for every draw, the world's too. Now a 2D-sharpened stand-in is bound on 2D draws only (D3D12, D3D11). Not seen
+  headless (the reference renderer has no stand-ins): Harry to compare on Windows.
+- #16 (the opening cinematic stretched on ultrawide): default.xbe's movies are decoded into the frame buffer with no draws, so
+  the 2D squeeze never saw them and UploadTarget blitted the 640x480 picture across the whole wide target. New
+  GameInfo::cpu_frames_boxed (AUF on): a picture the CPU wrote whole goes at HudAspect in the middle, sides black. The
+  harness's captures are at guest size, so this is Windows-only to confirm.
+- #13 (settings before starting): the launcher's Settings page, from game.json "settings" (key, label, help, default,
+  [value, name] choices); it edits only the top-level keys of play\settings.toml it is given, the rest of the file as the
+  game wrote it, a missing file made with those keys alone. AUF lists skip intro, display mode, v-sync, frame cap, high
+  frame rate, renderer, language, frame counter, pause in background. launcher_cli settings [key value] tests it; the
+  screen preview has a shot (4b_settings.png).
+- Smoke: 4 SMOKE OK. The French run failed once on "the mouse's hook was not reached": a race, not the SDK. The turn rate
+  is 1 for about 100 calls after the menus and then 0 in the mission's opening scene, so calls 100-200 could miss it.
+  Now 25-3000.
+- #10/#16's HUD at the screen's edges is not started: the SDK's hud_layout is for a HUD drawn in 3D, and AUF's is 2D.
+- Next: a Windows build of the branch (game and launcher), the all-games gate for the SDK (#14 changes every game), then
+  Harry's check and his go for fork main.
+
 ### 2026-11-15 - Release 1.0.3
 - Published by Harry: Invincible and Unlimited Ammo (#5), stairs at high frame rates (#9), one menu move sound (#3), SDK 40a735b (multi-core renderer, disc reads retried). Tag v1.0.3 at dd266f4; packages built on the Windows VM from clean clones with LLVM 22.1.3 (PAL 83,793,607 bytes, USA 78,643,002), their .json checked against the zips.
 - Replies drafted for #9 (close), #3 and #5 (open: dev console, gadgets; the other cheats).
