@@ -44,8 +44,12 @@ Newest first. Each entry: date, what changed, what was learned, what's next.
 - Windows VM (clean clone at 122de1d, SDK 7569f9f): the game and the launcher build. In C:\Testing\AUF-test-6d4a747 for Harry.
 - Gate, SDK 7569f9f, each game at its main and pin: PGR2, PGR1, EoN, NightFire, AUF (4) SMOKE OK; the launcher's screen
   preview reads every game's game.json. PGR2's unmerged world-mips touches the same BindGuestTexture line (a one-line merge).
-- Next: Harry's check on Windows (#12 mouse, #14 lightmap edges, #16 intro at 21:9, #13 Settings page), then his go for
-  fork main and 1.0.4.
+- Harry: #14 and #16 fixed. #12's pause menu (a quick flick left the highlight on a middle item): e05d9bc keeps the item
+  the pointer moved onto wanted until the menu takes it. Harry's log at e05d9bc: ten seconds of flicking, each item taken
+  in turn, 1 frame of 600 slow; no freeze while aiming.
+- The menus' pointer is a gold arrow of the game's own (ce92da7, after Juiced's): the 007 logo's gold, a navy edge, sized
+  to the window, and no longer hidden by the runtime's timer while it stands still. Builds on the Windows VM.
+- Next: Harry's look at the pointer and the Settings page (#13), then his go for fork main and 1.0.4.
 
 ### 2026-11-15 - Release 1.0.3
 - Published by Harry: Invincible and Unlimited Ammo (#5), stairs at high frame rates (#9), one menu move sound (#3), SDK 40a735b (multi-core renderer, disc reads retried). Tag v1.0.3 at dd266f4; packages built on the Windows VM from clean clones with LLVM 22.1.3 (PAL 83,793,607 bytes, USA 78,643,002), their .json checked against the zips.
