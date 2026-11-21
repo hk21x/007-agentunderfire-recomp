@@ -215,6 +215,7 @@ const app::GameInfo app::kGame = {
     .pad = auf::MenuMouse,                // changes a polled pad: the mouse in the menus
     .rumble = nullptr,
     .hud_aspect = 4.0f / 3.0f,            // the game lays out its 2D for 4:3: kept in the middle of a wider frame
+    .cpu_frames_boxed = true,             // the intro movies, decoded into the frame buffer: 4:3 in the middle too (issue 16)
     .squeeze_screen_programs = true,      // DRIVING.XBE draws its HUD and menus through vertex programs
     .sharpen_2d = true,                   // text and HUD pictures enlarged sharp (Settings::sharp_2d turns it off)
     .pal_console = !auf::kUsa,                  // a PAL disc (region 4)
