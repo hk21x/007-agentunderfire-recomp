@@ -34,5 +34,119 @@
     "packages": {
         "3dbed4eb51701a53676e0ace4cdea1752dc04697": "AgentUnderFire-PAL-package.zip",
         "dff80de4f889ef5ee70ac748a0391f2ed220d0e9": "AgentUnderFire-USA-package.zip"
-    }
+    },
+    "settings": [
+        {
+            "key": "skip_intro",
+            "label": "Skip intro movies",
+            "help": "Starts without the EA, MGM and logo movies.",
+            "default": false
+        },
+        {
+            "key": "display_mode",
+            "label": "Display mode",
+            "default": "borderless",
+            "choices": [
+                [
+                    "fullscreen",
+                    "Full screen"
+                ],
+                [
+                    "borderless",
+                    "Borderless window"
+                ],
+                [
+                    "windowed",
+                    "Window"
+                ]
+            ]
+        },
+        {
+            "key": "vsync",
+            "label": "V-sync",
+            "default": true
+        },
+        {
+            "key": "fps_cap",
+            "label": "Frame rate cap",
+            "default": 60,
+            "choices": [
+                [
+                    30,
+                    "30"
+                ],
+                [
+                    60,
+                    "60"
+                ],
+                [
+                    120,
+                    "120"
+                ],
+                [
+                    144,
+                    "144"
+                ],
+                [
+                    240,
+                    "240"
+                ],
+                [
+                    0,
+                    "No cap"
+                ]
+            ]
+        },
+        {
+            "key": "uncapped",
+            "label": "High frame rate",
+            "help": "Paced by the frame rate cap instead of the console's 30 on foot, and driving above 50 steps a second.",
+            "default": true
+        },
+        {
+            "key": "renderer",
+            "label": "Renderer",
+            "default": "d3d12",
+            "choices": [
+                [
+                    "d3d12",
+                    "Direct3D 12"
+                ],
+                [
+                    "d3d11",
+                    "Direct3D 11"
+                ]
+            ]
+        },
+        {
+            "key": "language",
+            "label": "Language",
+            "help": "The PAL disc's; the USA disc is in English.",
+            "default": 1,
+            "choices": [
+                [
+                    1,
+                    "English"
+                ],
+                [
+                    4,
+                    "Français"
+                ],
+                [
+                    3,
+                    "Deutsch"
+                ]
+            ]
+        },
+        {
+            "key": "show_fps",
+            "label": "Frame counter",
+            "default": false
+        },
+        {
+            "key": "pause_unfocused",
+            "label": "Pause in background",
+            "default": false
+        }
+    ]
 }
