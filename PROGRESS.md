@@ -49,7 +49,16 @@ Newest first. Each entry: date, what changed, what was learned, what's next.
   in turn, 1 frame of 600 slow; no freeze while aiming.
 - The menus' pointer is a gold arrow of the game's own (ce92da7, after Juiced's): the 007 logo's gold, a navy edge, sized
   to the window, and no longer hidden by the runtime's timer while it stands still. Builds on the Windows VM.
-- Next: Harry's look at the pointer and the Settings page (#13), then his go for fork main and 1.0.4.
+- Harry: the pointer works.
+- HUD at the frame's edges (#10, #16; 236b2bf, SDK 9c6802b): on foot the player's HUD 0x554A0, in DRIVING.XBE 0x6B490
+  (found by a gdb break on its shader's SetVertexShader, the guest stack read back), run with State::hud_layout at 4:3.
+  SDK: HudPiece takes pretransformed draws (viewport the frame's width; moved after the squeeze, depth tested ones at the
+  near plane) and counts depth ALWAYS as untested. Headless 21:9 draw lists: on foot the ring's 9 pieces -141 guest
+  pixels, the weapon panel's +141, the crosshair 0; driving the same, its texture's draws and the LESS-tested one not.
+  Not through a scope (its black surround is side pieces) nor with a menu up. Smoke 4 OK; gate PGR2, PGR1, EoN,
+  NightFire, AUF OK; the Windows VM builds. 50 Cent (hud_layout over its whole gameplay frame) checks at its next re-pin.
+- Next: Harry's look at the HUD on a wide screen (on foot, a driving mission, split screen if he can), then his go for
+  fork main and 1.0.4.
 
 ### 2026-11-15 - Release 1.0.3
 - Published by Harry: Invincible and Unlimited Ammo (#5), stairs at high frame rates (#9), one menu move sound (#3), SDK 40a735b (multi-core renderer, disc reads retried). Tag v1.0.3 at dd266f4; packages built on the Windows VM from clean clones with LLVM 22.1.3 (PAL 83,793,607 bytes, USA 78,643,002), their .json checked against the zips.
