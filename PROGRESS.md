@@ -41,8 +41,11 @@ Newest first. Each entry: date, what changed, what was learned, what's next.
   is 1 for about 100 calls after the menus and then 0 in the mission's opening scene, so calls 100-200 could miss it.
   Now 25-3000.
 - #10/#16's HUD at the screen's edges is not started: the SDK's hud_layout is for a HUD drawn in 3D, and AUF's is 2D.
-- Next: a Windows build of the branch (game and launcher), the all-games gate for the SDK (#14 changes every game), then
-  Harry's check and his go for fork main.
+- Windows VM (clean clone at 122de1d, SDK 7569f9f): the game and the launcher build. In C:\Testing\AUF-test-6d4a747 for Harry.
+- Gate, SDK 7569f9f, each game at its main and pin: PGR2, PGR1, EoN, NightFire, AUF (4) SMOKE OK; the launcher's screen
+  preview reads every game's game.json. PGR2's unmerged world-mips touches the same BindGuestTexture line (a one-line merge).
+- Next: Harry's check on Windows (#12 mouse, #14 lightmap edges, #16 intro at 21:9, #13 Settings page), then his go for
+  fork main and 1.0.4.
 
 ### 2026-11-15 - Release 1.0.3
 - Published by Harry: Invincible and Unlimited Ammo (#5), stairs at high frame rates (#9), one menu move sound (#3), SDK 40a735b (multi-core renderer, disc reads retried). Tag v1.0.3 at dd266f4; packages built on the Windows VM from clean clones with LLVM 22.1.3 (PAL 83,793,607 bytes, USA 78,643,002), their .json checked against the zips.
